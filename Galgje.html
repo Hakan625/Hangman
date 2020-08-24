@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Galgje</title>
+<style>
+	#streepjes {
+		letter-spacing: 10px;
+		font-size: 50px;
+	}
+	#spelInfo {
+		display: none;
+	}
+	#fout {
+		font-size: 50px;
+	}
+	#onthulling {
+		font-size: 50px;
+	}
+	button {
+		padding: 5px;
+		font-size: 20px;
+	}
+</style>
+</head>
+<body>
+	<h1>Galgje</h1>
+
+	<p>
+		Kies een letter. Als de letter voorkomt in het woordje, zal die letter worden ingevuld in de streepjes.<br>
+		Raad je het woord in 10 pogingen, dan win je het spel. 
+	</p>
+	<button id="nieuwspel">Start Spel</button>
+	<p id="streepjes"></p>
+
+	<section id="spelInfo">
+		<p id="status"></p><span id="onthulling"></span>
+		<p>U heeft nog <span id="levens">10</span> levens over</p>
+		<p>De volgende letters zitten er niet in: </p><span id="fout"></span><br>
+	</section>
+
+	<br><br>
+
+	<section id="alfabet"></section>
+	
+	<script>
+
+		var woordjes = [
+			'cavia',
+			'krukje',
+			'tijd',
+			'fors',
+			'sambal',
+			'zuivel',
+			'kritisch',
+			'jasje',
+			'giga',
+			'dieren',
+			'lepel',
+			'picknick',
+			'quasi',
+			'verzenden',
+			'winnaar',
+			'dextrose',
+			'vrezen',
+			'hierbij',
+			'quote',
+			'botox',
+			'cruciaal',
+			'zitting',
+			'cabaret',
+			'bewogen',
+			'vrijuit',
+			'carriere',
+			'ijverig',
+			'cake',
+			'dyslexie',
+			'uier',
+			'nihil',
+			'sausje',
+			'kuuroord',
+			'poppetje',
+			'docent',
+			'camping',
+			'schijn',
+			'kloppen',
+			'detox',
+			'boycot',
+			'cyclus',
+			'quiz',
+			'censuur',
+			'aaibaar',
+			'chagrijnig',
+			'fictief',
+			'chef',
+			'gering',
+			'nacht',
+			'cacao',
+			'triomf',
+			'baby',
+			'ijstijd',
+			'cruisen',
+			'ontzeggen',
+			'quad',
+			'open',
+			'turquoise',
+			'carnaval',
+			'boxer',
+			'straks',
+			'fysiek',
+			'accu',
+			'twijg',
+			'quote',
+			'gammel',
+			'flirt',
+			'futloos',
+			'vreugde',
+			'ogen',
+			'geloof',
+			'periode',
+			'volwaardig',
+			'uitleg',
+			'stuk',
+			'volk',
+			'even',
+			'stijl',
+			'val',
+			'alliantie',
+			'tocht',
+			'mooi',
+			'joggen',
+			'broek',
+			'kwik',
+			'werksfeer',
+			'vorm',
+			'nieuw',
+			'sopraan',
+			'miljoen',
+			'inrichting',
+			'klacht',
+			'dak',
+			'echt',
+			'schikking',
+			'print',
+			'oorlog',
+			'zijraam',
+			'hyacint',
+			'kitsch',
+			'gietlepel',
+			'cadeau',
+			'plexus',
+			'quiche',
+			'cohesie',
+			'fetisj',
+			'zwager',
+			'taxi',
+			'walvis'
+			];
+
+		// Genereer buttons de letters uit het alfabet
+		for (i = 1, c = 97; i <= 26; i++, c++){
+			// maak button aan
+			let button = document.createElement('button');
+			// plaats button
+			document.getElementById('alfabet').appendChild(button); 
+			// Vul de button met een letter
+			button.innerHTML = String.fromCharCode(c);
+			// Voeg button toe aan class 'alfabet'
+			button.classList.add('alfabet')
+
+			// Een beetje styling voor de buttons
+			button.style.padding  = '10px';
+			button.style.fontSize = '40px';
+			button.style.display  = 'none';
+		}
+		
+		var counter 	 = 10;
+		const streepjes  = document.getElementById('streepjes');
+		const levens 	 = document.getElementById('levens');
+		const status 	 = document.getElementById('status');
+		const fout 		 = document.getElementById('fout');
+		const onthulling = document.getElementById('onthulling');
+		const spelInfo   = document.getElementById('spelInfo');
+		const alfabetButtons = document.getElementsByClassName('alfabet');
+
+
+		function kiesWillekeurigWoord(){
+			// Genereer een willekeurig getal tussen 0 en het aantal woorden in de array
+			var i = Math.floor(Math.random() * woordjes.length); 
+			// Gebruik dat getal als index om een willekeurig woordje uit te kiezen
+			randomWoord = woordjes[i]; 
+			// spiekbriefje voor developers
+			console.log(randomWoord); 
+
+			// Maak voor elke letter van het woord een underscore 
+			hint = ''; 
+			for (let i = 0; i < randomWoord.length; i++){ 
+				hint += '_'; 
+			}
+
+			// Beeld de hints af op de juiste plek
+			streepjes.innerHTML = hint; 
+		}
+
+
+		function resetCounter(){
+			// Breng de counter terug naar 10
+			counter = 10;
+			// En beeld de counter af op de juiste plek
+			levens.innerHTML = counter;
+		}
+
+		function nieuwSpel(){
+			resetCounter();
+			kiesWillekeurigWoord();
+
+			// Onthul info over de game state
+			spelInfo.style.display = 'block'; 
+
+			// Onthul de alfabetbuttons op de pagina
+			for (let i = 0; i < alfabetButtons.length; i++){ 
+				alfabetButtons[i].style.display = 'inline';
+			}
+
+			// Update de status van het spel
+			status.innerHTML     = 'Spel is gestart';
+			// Verwijder de fout geraden letters van vorige spel
+			fout.innerHTML       = ''; 
+			// verwijder het onthulde woord van vorige spel
+			onthulling.innerHTML = ''; 
+			// schakelt buttons en toetsenbord in
+			activateListeners();
+
+			// Verander de tekst van de button van "Start spel" naar "Opnieuw spelen"
+			resetButton.innerHTML = 'Opnieuw spelen';
+		}
+
+		function beurtSpeler(letter) {
+			// nieuwe hints na poging
+			let nieuw    = ''; 
+			let gevonden = false; 
+
+			// Vergelijk één voor één de letters van het te raden woord met de ingevoerde letter
+			for (let i = 0; i < hint.length; i++){ 
+				// Als er een match is
+				if (randomWoord[i] == letter){ 
+					// Maak dan dat specifieke stukje van de nieuwe string de meegegeven letter
+					nieuw += letter; 
+					gevonden = true; 
+				} else {
+					// Geen match? Laat de originele hint dan staan
+					nieuw += hint[i]; 
+				} 
+			}
+
+			// Vervang oude hints met nieuwe hints
+			hint 				= nieuw; 
+			// Beeld de nieuwe hints af op de pagina
+			streepjes.innerHTML = nieuw;
+
+			// Is het volledige woord geraden?
+			if (randomWoord == nieuw){
+				// Feliciteer de speler
+				status.innerHTML = 'Gefeliciteerd, u heeft gewonnen!';
+				let witregel     = document.createElement('p');
+				let felicitatie  = document.createElement('img');
+				felicitatie.setAttribute('src', 'https://media.giphy.com/media/5IMcyqKbkg0O4/giphy.gif');
+				felicitatie.setAttribute('width', '300px');
+				status.appendChild(witregel);
+				status.appendChild(felicitatie);
+
+				// Schakel klik/toetsenbord functionaliteiten uit en beeindig daarmee het spel
+				deactivateListeners();
+			}
+
+			// Zat de letter er niet in?
+			if (!gevonden) { 
+				// Straf het af
+				counterDown(); 
+				// beeld fout geraden letter af op de pagina
+				fout.innerHTML += letter + ',  '; 
+			}
+		} // einde beurt
+
+		function counterDown(){
+			// Verminder het aantal levens met 1
+			counter--; 
+			// Beeld het nieuwe aantal levens af op de pagina
+			levens.innerHTML = counter; 
+
+			// Alle levens verspeeld?
+			if (counter == 0){ 
+				// Beeindig het spel en laat de speler weten
+				status.innerHTML     = 'Game over! Het woord was: ';
+				// Onthul het woord dat niet werd geraden
+				onthulling.innerHTML = randomWoord; 
+				let witregel 		 = document.createElement('p');
+				let gameOver 		 = document.createElement('img');
+				gameOver.setAttribute('src', 'https://media.giphy.com/media/l1AsyjZ8XLd1V7pUk/giphy.gif');
+				gameOver.setAttribute('width', '300px');
+				status.appendChild(witregel);
+				status.appendChild(gameOver);
+
+				// Schakel klik/toetsenbord functionaliteiten uit en beeindig daarmee het spel
+				deactivateListeners(); 
+			}
+		}
+
+		function klikFunctionaliteit(){
+			beurtSpeler(this.textContent);
+		}
+
+		function keyboardFunctionaliteit(event){
+			beurtSpeler(event.key);
+		}
+
+		// Schakel buttons en toetsenbord in
+		function activateListeners(){ 
+			// Eerste button op de pagina is de resetbutton, vandaar i = 1
+			for (let i = 1; i <= 26; i++){ 
+				let button = document.getElementsByTagName('button')[i];
+				button.addEventListener('click', klikFunctionaliteit);	
+			}
+			window.addEventListener('keyup', keyboardFunctionaliteit);
+		}
+
+		// Schakel buttons en toetsenbord uit
+		function deactivateListeners(){ 
+			// eerste button op de pagina is de resetbutton, vandaar i = 1
+			for (let i = 1; i <= 26; i++){ 
+				let button = document.getElementsByTagName('button')[i]; 
+				button.removeEventListener('click', klikFunctionaliteit); 
+			}
+			window.removeEventListener('keyup', keyboardFunctionaliteit);
+		}
+
+		// Spel startbaar maken met de resetknop
+		const resetButton = document.getElementById('nieuwspel');
+		resetButton.addEventListener('click', nieuwSpel);
+	
+
+
+	</script>
+	
+	
+
+</body>
+</html>
