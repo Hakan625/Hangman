@@ -156,7 +156,7 @@
 			'walvis'
 			];
 
-		// Genereer buttons de letters uit het alfabet
+		// Genereer buttons voor de letters uit het alfabet
 		for (i = 1, c = 97; i <= 26; i++, c++){
 			// maak button aan
 			let button = document.createElement('button');
@@ -177,7 +177,7 @@
 		const streepjes  = document.getElementById('streepjes');
 		const levens 	 = document.getElementById('levens');
 		const status 	 = document.getElementById('status');
-		const fout 		 = document.getElementById('fout');
+		const fout 	 = document.getElementById('fout');
 		const onthulling = document.getElementById('onthulling');
 		const spelInfo   = document.getElementById('spelInfo');
 		const alfabetButtons = document.getElementsByClassName('alfabet');
@@ -222,12 +222,12 @@
 			}
 
 			// Update de status van het spel
-			status.innerHTML     = 'Spel is gestart';
+			status.innerHTML = 'Spel is gestart';
 			// Verwijder de fout geraden letters van vorige spel
-			fout.innerHTML       = ''; 
-			// verwijder het onthulde woord van vorige spel
+			fout.innerHTML = ''; 
+			// Verwijder het onthulde woord van vorige spel
 			onthulling.innerHTML = ''; 
-			// schakelt buttons en toetsenbord in
+			// Schakel buttons en toetsenbord in
 			activateListeners();
 
 			// Verander de tekst van de button van "Start spel" naar "Opnieuw spelen"
@@ -235,7 +235,7 @@
 		}
 
 		function beurtSpeler(letter) {
-			// nieuwe hints na poging
+			// nieuwe hints voor na poging
 			let nieuw    = ''; 
 			let gevonden = false; 
 
@@ -253,7 +253,7 @@
 			}
 
 			// Vervang oude hints met nieuwe hints
-			hint 				= nieuw; 
+			hint = nieuw; 
 			// Beeld de nieuwe hints af op de pagina
 			streepjes.innerHTML = nieuw;
 
@@ -284,6 +284,7 @@
 		function counterDown(){
 			// Verminder het aantal levens met 1
 			counter--; 
+			
 			// Beeld het nieuwe aantal levens af op de pagina
 			levens.innerHTML = counter; 
 
@@ -337,8 +338,6 @@
 		const resetButton = document.getElementById('nieuwspel');
 		resetButton.addEventListener('click', nieuwSpel);
 	
-
-
 	</script>
 	
 	
